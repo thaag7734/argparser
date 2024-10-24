@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ArgParser {
-  public Map<String, Kwarg> kwargs;
-  public Map<String, Flag> flags;
-  public String[] posArgs;
+  public final Map<String, Kwarg> kwargs;
+  public final Map<String, Flag> flags;
+  public final String[] posArgs;
 
   public ArgParser() {
     this.kwargs = new HashMap<>();
@@ -16,6 +16,8 @@ public class ArgParser {
 
   public ArgParser(int numPosArgs) {
     this.posArgs = new String[numPosArgs];
+    this.kwargs = new HashMap<>();
+    this.flags = new HashMap<>();
   }
 
   public void registerFlag(String name) {
@@ -28,5 +30,13 @@ public class ArgParser {
 
   public void registerFlag(String name, Boolean defaultValue) {
     this.flags.put(name, new Flag(name, defaultValue));
+  }
+
+  public void registerKwarg(String name, int numSubArgs, String[] aliases) {
+    this.kwargs.put(name, new Kwarg(name, aliases, numSubArgs));
+  }
+
+  public void registerKwarg(String name, int numSubArgs) {
+    this.kwargs.put(name, new Kwarg(name, numSubArgs));
   }
 }

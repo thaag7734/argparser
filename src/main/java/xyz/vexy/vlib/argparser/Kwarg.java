@@ -3,22 +3,16 @@ package xyz.vexy.vlib.argparser;
 public class Kwarg extends Arg {
   private final String[] subArgs;
 
-  public Kwarg(String name, int numSubArgs, String[] aliases) {
+  public Kwarg(String name, String[] aliases, int numSubArgs) {
     super(name, aliases);
 
     this.subArgs = new String[numSubArgs];
   }
 
-  public Kwarg(String name, String[] aliases) {
-    super(name, aliases);
-
-    this.subArgs = null;
-  }
-
-  public Kwarg(String name) {
+  public Kwarg(String name, int numSubArgs) {
     super(name);
 
-    this.subArgs = null;
+    this.subArgs = new String[numSubArgs];
   }
 
   public String[] getSubArgs() {
