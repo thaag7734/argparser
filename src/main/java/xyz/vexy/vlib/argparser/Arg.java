@@ -21,4 +21,14 @@ public class Arg {
   public String[] getAliases() {
     return this.aliases;
   }
+
+  public boolean hasAlias(String alias) {
+    for (String currentAlias : this.aliases) {
+      if (alias == currentAlias) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
