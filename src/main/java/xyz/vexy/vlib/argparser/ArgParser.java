@@ -1,8 +1,6 @@
 package xyz.vexy.vlib.argparser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ArgParser {
   public final ArrayList<Arg> args;
@@ -39,9 +37,9 @@ public class ArgParser {
     this.registerArg(new Kwarg(name));
   }
 
-  public Arg matchArg(String name) throws InvalidArgumentException {
+  public Arg matchArg(String name) throws IllegalArgumentException {
     if (name.length() < 2 || !name.startsWith("-"))
-      throw new InvalidArgumentException("Argument " + name + " is invalid");
+      throw new IllegalArgumentException("Argument " + name + " is invalid");
 
     String strippedName;
 
@@ -51,7 +49,7 @@ public class ArgParser {
       strippedName = name.substring(1);
     } else {
       /* this should only happen once we have parsed pargs */
-      throw new InvalidArgumentException("Argument " + name + " is invalid");
+      throw new IllegalArgumentException("Argument " + name + " is invalid");
     }
 
     for (Arg arg : this.args) {
@@ -60,10 +58,10 @@ public class ArgParser {
       }
     }
 
-    throw new InvalidArgumentException("Argument " + name + " is invalid");
+    throw new IllegalArgumentException("Argument " + name + " is invalid");
   }
 
-  public void parse(String[] args) throws InvalidArgumentException {
+  public void parse(String[] args) throws IllegalArgumentException {
     int startIdx = 0;
 
     /* positional args */
@@ -86,7 +84,7 @@ public class ArgParser {
     for (int i = startIdx; i < args.length; i++) {
       // filter out some invalid arguments before looking through registered ones
       if (!(args[i].length() >= 2 && args[i].startsWith("-"))) {
-        throw new InvalidArgumentException("Argument " + args[i] + " is invalid");
+        throw new IllegalArgumentException("Argument " + args[i] + " is invalid");
       }
 
       Arg arg = this.matchArg(args[i]);
@@ -104,7 +102,7 @@ public class ArgParser {
         flarg.set();
       } else {
         // something truly terrible has to happen to get here i think
-        throw new InvalidArgumentException("Argument " + args[i] + " is invalid");
+        throw new IllegalArgumentException("Argument " + args[i] + " is invalid");
       }
     }
   }
