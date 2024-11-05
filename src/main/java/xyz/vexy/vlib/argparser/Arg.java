@@ -2,31 +2,36 @@ package xyz.vexy.vlib.argparser;
 
 public class Arg {
   private String name;
-  private final String[] aliases;
+  private final char alias;
 
-  public Arg(String name, String[] aliases) {
+  public Arg(String name, char alias) {
+    if (alias == '\u0000') {
+      throw new IllegalArgumentException("The character \\u0000 cannot be an alias");
+    }
+
     this.name = name;
-    this.aliases = aliases;
+    this.alias = alias;
   }
 
   public Arg(String name) {
     this.name = name;
-    this.aliases = null;
+    this.alias = '\u0000';
   }
 
   public String getName() {
     return this.name;
   }
 
-  public String[] getAliases() {
-    return this.aliases;
+  public char getAlias() {
+    return this.alias;
   }
 
-  public boolean hasAlias(String alias) {
-    for (String currentAlias : this.aliases) {
-      if (alias == currentAlias) {
-        return true;
-      }
+  public boolean hasAlias(char alias) {
+    if (this.alias == '\u0000')
+      return false;
+
+    if (alias == this.alias) {
+      return true;
     }
 
     return false;

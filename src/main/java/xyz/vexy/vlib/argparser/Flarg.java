@@ -7,8 +7,8 @@ public class Flarg extends Arg {
     super(name);
   }
 
-  public Flarg(String name, String[] aliases) {
-    super(name, aliases);
+  public Flarg(String name, char alias) {
+    super(name, alias);
   }
 
   public void set() {
