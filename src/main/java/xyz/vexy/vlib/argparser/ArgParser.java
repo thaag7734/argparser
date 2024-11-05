@@ -82,7 +82,7 @@ public class ArgParser {
       }
     }
 
-    /* kwargs and flags */
+    /* kwargs and flargs */
     for (int i = startIdx; i < args.length; i++) {
       // filter out some invalid arguments before looking through registered ones
       if (!(args[i].length() >= 2 && args[i].startsWith("-"))) {
@@ -96,7 +96,8 @@ public class ArgParser {
 
         kwarg.setValue(args[i + 1]);
 
-        i++; // don't try to parse the value of the kwarg
+        // don't try to parse the value of the kwarg
+        i++;
       } else if (arg instanceof Flarg) {
         Flarg flarg = (Flarg) arg;
 
