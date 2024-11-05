@@ -6,14 +6,23 @@ public class Arg {
 
   public Arg(String name, char alias) {
     if (alias == '\u0000') {
-      throw new IllegalArgumentException("The character \\u0000 cannot be an alias");
+      throw new IllegalArgumentException("Illegal alias for arg " + name + ": '\u0000'");
+    } else if (alias == '-') {
+      throw new IllegalArgumentException("Illegal alias for " + name + ": '-'");
     }
 
+    if (name.startsWith("-")) {
+      throw new IllegalArgumentException("Illegal name \"" + name + "\": name cannot start with \"-\"");
+    }
     this.name = name;
     this.alias = alias;
   }
 
   public Arg(String name) {
+    if (name.startsWith("-")) {
+      throw new IllegalArgumentException("Illegal name \"" + name + "\": name cannot start with \"-\"");
+    }
+
     this.name = name;
     this.alias = '\u0000';
   }

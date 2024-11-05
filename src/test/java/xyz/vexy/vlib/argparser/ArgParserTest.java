@@ -419,4 +419,39 @@ public class ArgParserTest {
       assertTrue(flarg);
     }
   }
+
+  @Test
+  public void testIllegalArgNames() {
+    ArgParser parser = new ArgParser();
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("-flargName");
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("--flargName");
+    });
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerKwarg("-kwargName");
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerKwarg("--kwargName");
+    });
+  }
+
+  @Test
+  public void testIllegalAliases() {
+    ArgParser parser = new ArgParser();
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("flargName", '-');
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("otherFlargName", '\u0000');
+    });
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerKwarg("kwargName", '-');
+    });
+  }
 }
