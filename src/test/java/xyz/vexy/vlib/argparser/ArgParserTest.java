@@ -454,4 +454,68 @@ public class ArgParserTest {
       parser.registerKwarg("kwargName", '-');
     });
   }
+
+  @Test
+  public void kwargCannotStealAlias() {
+    ArgParser parser = new ArgParser();
+
+    parser.registerFlarg("arg0", '0');
+    parser.registerKwarg("arg1", '1');
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerKwarg("0");
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerKwarg("1");
+    });
+  }
+
+  @Test
+  public void flargCannotStealAlias() {
+    ArgParser parser = new ArgParser();
+
+    parser.registerFlarg("arg0", '0');
+    parser.registerKwarg("arg1", '1');
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("0");
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.registerFlarg("1");
+    });
+  }
+
+  @Test
+  public void doesNotParseBlankArg() {
+    ArgParser parser = new ArgParser();
+    String[] args = { "" };
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.parse(args);
+    });
+  }
+
+  @Test
+  public void doesNotParseHyphenlessArg() {
+    ArgParser parser = new ArgParser();
+    String[] args = { "thisArgHasNoHyphen" };
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.parse(args);
+    });
+  }
+
+  @Test
+  public void doesNotParseNullArg() {
+    ArgParser parser = new ArgParser();
+    parser.registerKwarg("kwarg");
+    parser.registerKwarg("otherKwarg", 'k');
+    parser.registerFlarg("flarg");
+
+    String[] args = { "--kwarg", "kwargVal", "-k", "otherKwargVal", null, "-flarg" };
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      parser.parse(args);
+    });
+  }
 }

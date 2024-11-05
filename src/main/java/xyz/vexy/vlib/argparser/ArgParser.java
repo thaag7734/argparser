@@ -127,12 +127,6 @@ public class ArgParser {
           }
         }
       }
-    } else {
-      /*
-       * this should only happen once we have parsed pargs, so an arg with no leading
-       * '-' is invalid
-       */
-      throw new IllegalArgumentException("Argument " + name + " is invalid");
     }
 
     throw new IllegalArgumentException("Argument " + name + " is invalid");
