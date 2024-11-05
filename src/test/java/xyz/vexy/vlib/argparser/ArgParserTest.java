@@ -353,4 +353,70 @@ public class ArgParserTest {
       assertEquals("value" + i, kwarg);
     }
   }
+
+  @Test
+  public void testAllArgTypes() {
+    String[] kwargs = new String[10];
+    String[] flargs = new String[5];
+    String[] pargs = new String[5];
+    ArgParser parser = new ArgParser(pargs.length);
+
+    for (int i = 0; i < parser.pargs.length; i++) {
+      pargs[i] = "parg" + i;
+    }
+
+    for (int i = 0; i < kwargs.length / 2; i++) {
+      String argName = "kwarg" + i;
+
+      assertDoesNotThrow(() -> {
+        parser.registerKwarg(argName);
+      });
+
+      kwargs[i * 2] = "--" + argName;
+      kwargs[i * 2 + 1] = "value" + i;
+    }
+
+    for (int i = 0; i < flargs.length; i++) {
+      String argName = "flarg" + i;
+
+      assertDoesNotThrow(() -> {
+        parser.registerFlarg(argName);
+      });
+
+      flargs[i] = "-" + argName;
+    }
+
+    String[] pargsAndKwargs = Arrays.copyOf(pargs, pargs.length + kwargs.length);
+    System.arraycopy(kwargs, 0, pargsAndKwargs, pargs.length, kwargs.length);
+
+    String[] args = Arrays.copyOf(pargsAndKwargs, pargsAndKwargs.length + flargs.length);
+    System.arraycopy(flargs, 0, args, pargsAndKwargs.length, flargs.length);
+
+    assertDoesNotThrow(() -> {
+      parser.parse(args);
+    });
+
+    for (int i = 0; i < parser.pargs.length; i++) {
+      assertNotNull(parser.pargs[i]);
+      assertEquals("parg" + i, parser.pargs[i]);
+    }
+
+    for (int i = 0; i < kwargs.length / 2; i++) {
+      String argName = "kwarg" + i;
+
+      String kwarg = parser.getKwarg(argName);
+
+      assertNotNull(kwarg);
+      assertEquals("value" + i, kwarg);
+    }
+
+    for (int i = 0; i < flargs.length; i++) {
+      String argName = "flarg" + i;
+
+      boolean flarg = parser.getFlarg(argName);
+
+      assertNotNull(flarg);
+      assertTrue(flarg);
+    }
+  }
 }
